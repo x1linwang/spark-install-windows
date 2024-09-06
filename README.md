@@ -45,14 +45,39 @@ Follow these steps to set up Apache Spark on your Windows machine using Windows 
 
 7. Copy the URL from the terminal and paste it into your web browser to access Jupyter Notebook.
 
-## Verifying the Installation
+## Create a New Notebook with Spylon Kernel
 
-1. In Jupyter Notebook, create a new notebook using the spylon-kernel.
-2. In a cell, type and run:
-   ```scala
-   val x = 1
+1. In the Jupyter interface, click on "New" in the top right corner.
+2. Select "spylon-kernel" from the dropdown menu.
+
+## Test the Spylon Kernel
+
+In the new notebook, you can test if everything is working correctly by running the following cells:
+
+1. Test Scala:
+
+   In the current spylon kernel, run the following command:
    ```
-3. If you see `x: Int = 1` in the output, your setup is complete!
+   val x = 1
+   println(s"This is Scala. x = $x")
+   ```
+
+2. Test PySpark:
+
+   Change to a python kernel and run the below command:
+   ```
+   %%python
+   from pyspark.sql import SparkSession
+
+   spark = SparkSession.builder.appName("test").getOrCreate()
+   print(f"Spark version: {spark.version}")
+
+   # Create a sample DataFrame
+   df = spark.createDataFrame([(1, "a"), (2, "b"), (3, "c")], ["id", "letter"])
+   df.show()
+   ```
+
+If both cells run without errors, congratulations! Your Spark environment with spylon kernel is set up correctly.
 
 ## Troubleshooting
 
