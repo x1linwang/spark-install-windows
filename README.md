@@ -38,7 +38,7 @@ Follow these steps to set up Apache Spark on your Windows machine using Windows 
 
 5. After the script completes, close all Ubuntu windows and open a new one.
 
-6. To start using Jupyter Notebook, run:
+6. To start using Jupyter Notebook, **in your Ubuntu terminal**, run the following command:
    ```bash
    jupyter notebook --no-browser
    ```
