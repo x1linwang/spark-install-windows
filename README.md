@@ -3,58 +3,72 @@ Apache-spark installation script for Windows. This script is customized for IEOR
 
 # Windows WSL Ubuntu Spark Setup Instructions
 
-Follow these steps to set up Apache Spark on your Windows machine using Windows Subsystem for Linux (WSL) with Ubuntu. This script is hosted on GitHub for easy access and updates.
+This guide will help you install Apache Spark on Ubuntu (running on WSL for Windows users) using Homebrew, and install Anaconda with Python 3.11 for compatibility with spylon-kernel.
 
 ## Prerequisites
-
 - Windows 10 version 2004 and higher (Build 19041 and higher) or Windows 11
-- Administrator privileges on your Windows machine
-- Internet connection
+- WSL and Ubuntu installed. Follow the [official Microsoft guide](https://learn.microsoft.com/en-us/windows/wsl/install) to set up WSL and Ubuntu.
+- Administrator privileges on your Windows machine.
 
-## Installation Steps
+## Step-by-Step Guide
 
-1. Download the installation script:
-   - Open PowerShell as Administrator:
-     - Right-click on the Start button
-     - Select "Windows PowerShell (Admin)"
-   - Run the following command to download the script directly from GitHub:
-     ```powershell
-     Invoke-WebRequest -Uri "https://raw.githubusercontent.com/x1linwang/spark-install-windows/main/windows-wsl-spark-setup.ps1" -OutFile "$env:USERPROFILE\Desktop\windows-wsl-spark-setup.ps1"
-     ```
-2. Navigate to the script location:
-   ```powershell
-   cd $env:USERPROFILE\Desktop
-   ```
+### 0. Install WSL and Ubuntu
+Follow the [Microsoft official WSL guide](https://learn.microsoft.com/en-us/windows/wsl/install) to install WSL and Ubuntu on your Windows machine.
 
-3. Run the script:
-   ```powershell
-   .\windows-wsl-spark-setup.ps1
-   ```
+**Note**: 
 
-4. Follow the on-screen instructions:
-   - If WSL or Ubuntu is not installed, the script will install them and prompt you to restart your computer. After restarting, run the script again.
-   - When prompted, set up your Ubuntu username and password.
-   - The script will then install Homebrew, Java, Scala, Apache Spark, and Anaconda in your Ubuntu environment.
+i. To install Ubuntu as your default linux distribution, please open **PowerShell** in **administrator mode** by right-clicking and selecting "Run as administrator" and enter:
+```bash
+wsl --install -d Ubuntu-22.04
+```
+Then restart your machine.
 
-5. After the script completes, close all Ubuntu windows and open a new one.
+ii. If you have trouble installing WSL, please check the [official troubleshooting guide](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting#installation-issues).
 
-6. To start using Jupyter Notebook, **in your Ubuntu terminal**, run the following command:
-   ```bash
-   jupyter notebook --no-browser
-   ```
+### 1. Download the Setup Script
+Open a **Ubuntu** terminal from the start menu and enter the following command:
 
-7. Copy the URL from the terminal and paste it into your web browser to access Jupyter Notebook.
+```bash
+wget https://raw.githubusercontent.com/x1linwang/spark-install-windows/main/ubuntu_setup.sh
+```
 
-## Create a New Notebook with Spylon Kernel
+### 2. Run the Setup Script
+Make the script executable and run the script:
 
-1. In the Jupyter interface, click on "New" in the top right corner.
-2. Select "spylon-kernel" from the dropdown menu.
+```bash
+chmod +x ubuntu_setup.sh
+./ubuntu_setup.sh
+```
 
-## Test the Spylon Kernel
+### 3. Complete Anaconda Installation
+During the script execution, you will be prompted to confirm the installation of Anaconda. Type `yes` when prompted.
+
+### 4. Final Steps
+Once the script completes, restart your terminal or run:
+
+```bash
+source ~/.profile
+```
+
+### 5. Start Jupyter Notebook
+Again, open a **Ubuntu** terminal from the start menu and enter the following command:
+```bash
+jupyter notebook --no-browser
+```
+
+Copy the URL from the terminal and paste it into your web browser to access Jupyter Notebook.
+
+### 6. Create a New Notebook with Spylon Kernel
+
+i. In the Jupyter interface, click on "New" in the top right corner.
+
+ii. Select "spylon-kernel" from the dropdown menu.
+
+### 7. Test the Spylon Kernel
 
 In the new notebook, you can test if everything is working correctly by running the following cells:
 
-1. Test Scala:
+i. Test Scala:
 
    In the current spylon kernel, run the following command:
    ```
@@ -62,7 +76,7 @@ In the new notebook, you can test if everything is working correctly by running 
    println(s"This is Scala. x = $x")
    ```
 
-2. Test PySpark:
+ii. Test PySpark:
 
    Change to a python kernel and run the below command:
    ```
@@ -84,12 +98,4 @@ If both cells run without errors, congratulations! Your Spark environment with s
 - If you encounter any "command not found" errors, try closing and reopening your Ubuntu terminal.
 - If you get a py4j error when running a notebook with spylon-kernel, check the version of py4j in `$SPARK_HOME/python/lib` and update the PYTHONPATH in your `~/.profile` accordingly.
 - If you have issues downloading the script, ensure you have an active internet connection and that GitHub is accessible from your network.
-- If PowerShell blocks the script execution due to security policies, you may need to change the execution policy temporarily:
-  ```powershell
-  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-  ```
-  Remember to revert this change after running the script:
-  ```powershell
-  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Default
-  ```
 - If you run into any other issues, please contact your TA for help.
